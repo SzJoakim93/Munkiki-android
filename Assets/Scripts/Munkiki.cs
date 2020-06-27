@@ -15,7 +15,10 @@ public class Munkiki : MonoBehaviour {
 
 	float actionCount = 0.0f;
 	float jumpCount = 0.0f;
+	float cubeFall = 0.0f;
 	int action = 0;
+	Transform pushableObj = null;
+	Transform collidedObj = null;
 
 	// Use this for initialization
 	void Start () {
@@ -59,6 +62,20 @@ public class Munkiki : MonoBehaviour {
 					transform.Translate(0.0f, 0.0f, 3.0f * Time.deltaTime);
 					actionCount -= 1.5f * Time.deltaTime;
 					break;
+				case 7: //pushing
+					transform.Translate(0.0f, 0.0f, 1.0f * Time.deltaTime);
+
+					if (Mathf.RoundToInt(transform.eulerAngles.y) == 0)
+						pushableObj.Translate(0.0f, 0.0f, 1.0f * Time.deltaTime);
+					else if (Mathf.RoundToInt(transform.eulerAngles.y) == 270)
+						pushableObj.Translate(-1.0f * Time.deltaTime, 0.0f, 0.0f);
+					else if (Mathf.RoundToInt(transform.eulerAngles.y) == 180)
+						pushableObj.Translate(0.0f, 0.0f, -1.0f * Time.deltaTime);
+					else if (Mathf.RoundToInt(transform.eulerAngles.y) == 90)
+						pushableObj.Translate(1.0f * Time.deltaTime, 0.0f, 0.0f);
+
+					actionCount -= 1.0f * Time.deltaTime;
+					break;
 			}
 				
 			if (actionCount < 0.0f) {
@@ -66,9 +83,19 @@ public class Munkiki : MonoBehaviour {
 				if (action == 3 || action == 4)
 					fixRotate();
 
-				if ((action == 1 || action == 2 || action == 5) && !ObjectCollision(Bottom))
+				if ((action == 1 || action == 2 || action == 5) && !ObjectCollision(Bottom.position))
 					fall();
 				else {
+					if (action == 7) {
+						pushableObj.position = new Vector3(
+							Mathf.Round(pushableObj.position.x), pushableObj.position.y, Mathf.Round(pushableObj.position.z));
+
+						if (!ObjectCollision(LowerFront.position))
+							cubeFall = 1.0f;
+						else
+							pushableObj.SetParent(collidedObj);
+					}
+	
 					actionCount = 0.0f;
 					action = 0;
 				}
@@ -79,18 +106,28 @@ public class Munkiki : MonoBehaviour {
 						Destroy(note.gameObject);
 						break;
 					}
-
-
 				}
-				
-
 			}
-				
 		}
 
 		if (jumpCount > 0.0f) { //jump
 			transform.Translate(0.0f,  2.5f * Time.deltaTime, 0.0f);
 			jumpCount -= 2.5f * Time.deltaTime;
+		}
+
+		if (cubeFall > 0.0f) {
+			pushableObj.Translate(0.0f, -1.0f * Time.deltaTime, 0.0f);
+			cubeFall -= 1.0f * Time.deltaTime;
+
+			if (cubeFall <= 0.0f) {
+				Vector3 cubeBottomSide = new Vector3(pushableObj.position.x, pushableObj.position.y - 1.0f, pushableObj.position.z);
+
+				if (pushableObj.position.y > -0.8f && !ObjectCollision(cubeBottomSide))
+					cubeFall = 1.0f;
+				else
+					pushableObj.SetParent(collidedObj);
+					
+			}
 		}
 	}
 
@@ -117,7 +154,7 @@ public class Munkiki : MonoBehaviour {
 	}
 
 	public void Backward() {
-		if (action == 0 && !ObjectCollision(BackSide)) {
+		if (action == 0 && !ObjectCollision(BackSide.position)) {
 			actionCount = 1.0f;
 			action = 2;
 		}
@@ -139,6 +176,14 @@ public class Munkiki : MonoBehaviour {
 
 	public void Push() {
 
+		if (!ObjectCollision(UpperFront.position) && !ObjectCollision(FarFront.position))
+			foreach (var tile in LevelManager.Tiles)
+				if (Vector3.Distance(FrontSide.position, tile.position) < 0.5f) {
+					pushableObj = tile;
+					actionCount = 1.0f;
+					action = 7;
+				}
+
 	}
 
 	public void Hit() {
@@ -153,13 +198,13 @@ public class Munkiki : MonoBehaviour {
 		else if (transform.eulerAngles.y > 250 && transform.eulerAngles.y < 290)
 			transform.eulerAngles = new Vector3(0.0f, 270.0f, 0.0f);
 		else if (transform.eulerAngles.y > 340 || transform.eulerAngles.y < 20)
-			transform.eulerAngles = new Vector3(0.0f, 0.0f, 0.0f);		
+			transform.eulerAngles = new Vector3(0.0f, 0.0f, 0.0f);
 	}
 
 	int ObjectCollisonForward() {
 		foreach (var tile in LevelManager.Tiles)
 			if (Vector3.Distance(FrontSide.position, tile.position) < 0.5f) {
-				if (ObjectCollision(UpperFront))
+				if (ObjectCollision(UpperFront.position))
 					return 2;
 				else
 					return 1;
@@ -170,13 +215,17 @@ public class Munkiki : MonoBehaviour {
 
 	bool isCrossJump() {
 
-		return !ObjectCollision(LowerFront) && !ObjectCollision(FarFront) && ObjectCollision(FarLowerFront);
+		return !ObjectCollision(LowerFront.position) && !ObjectCollision(FarFront.position) && ObjectCollision(FarLowerFront.position);
 	}
 
-	bool ObjectCollision(Transform obj) {
+	bool ObjectCollision(Vector3 obj) {
 		foreach (var tile in LevelManager.Tiles)
-			if (Vector3.Distance(obj.position, tile.position) < 0.5f)
+			if (Vector3.Distance(obj, tile.position) < 0.5f) {
+				collidedObj = tile;
 				return true;
+			}
+				
+		collidedObj = null;
 		return false;
 	}
 
