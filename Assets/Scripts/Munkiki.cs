@@ -5,6 +5,11 @@ public class Munkiki : MonoBehaviour {
 	public Transform FrontSide;
 	public Transform BackSide;
 	public Transform Bottom;
+	public Transform UpperFront;
+	public Transform LowerFront;
+	public Transform FarFront;
+	public Transform FarUpperFront;
+	public Transform FarLowerFront;
 	public Transform Camera;
 	public LevelManager LevelManager;
 
@@ -22,23 +27,23 @@ public class Munkiki : MonoBehaviour {
 		if (actionCount > 0.0f) {
 
 			switch (action) {
-				case 1:
+				case 1: //step forward
 					transform.Translate(0.0f, 0.0f, 1.5f * Time.deltaTime);
 					actionCount -= 1.5f * Time.deltaTime;
 					break;
-				case 2:
+				case 2: //step backward
 					transform.Translate(0.0f, 0.0f, -1.5f * Time.deltaTime);
 					actionCount -= 1.5f * Time.deltaTime;
 					break;
-				case 3:
+				case 3: //turn right
 					transform.Rotate(0.0f, 100.0f * Time.deltaTime, 0.0f);
 					actionCount -=  100.0f * Time.deltaTime;
 					break;
-				case 4:
+				case 4: //turn left
 					transform.Rotate(0.0f, -100.0f * Time.deltaTime, 0.0f);
 					actionCount -=  100.0f * Time.deltaTime;
 					break;
-				case 5:
+				case 5: //fall
 
 					if (transform.position.y < -0.2f) {
 						Camera.SetParent(null);
@@ -49,6 +54,10 @@ public class Munkiki : MonoBehaviour {
 						actionCount -= 2.0f * Time.deltaTime;
 					}
 
+					break;
+				case 6: //cross jump
+					transform.Translate(0.0f, 0.0f, 3.0f * Time.deltaTime);
+					actionCount -= 1.5f * Time.deltaTime;
 					break;
 			}
 				
@@ -79,7 +88,7 @@ public class Munkiki : MonoBehaviour {
 				
 		}
 
-		if (jumpCount > 0.0f) {
+		if (jumpCount > 0.0f) { //jump
 			transform.Translate(0.0f,  2.5f * Time.deltaTime, 0.0f);
 			jumpCount -= 2.5f * Time.deltaTime;
 		}
@@ -94,10 +103,14 @@ public class Munkiki : MonoBehaviour {
 
 				if (tileState == 1)
 					jump();
-					
-
-				actionCount = 1.0f;
-				action = 1;
+				else if (isCrossJump()) {
+					actionCount = 1.0f;
+					action = 6;
+				}
+				else {
+					actionCount = 1.0f;
+					action = 1;
+				}	
 			}
 				
 		}
@@ -146,13 +159,18 @@ public class Munkiki : MonoBehaviour {
 	int ObjectCollisonForward() {
 		foreach (var tile in LevelManager.Tiles)
 			if (Vector3.Distance(FrontSide.position, tile.position) < 0.5f) {
-				if (tile.childCount > 0)
+				if (ObjectCollision(UpperFront))
 					return 2;
 				else
 					return 1;
 			}
 				
 		return 0;
+	}
+
+	bool isCrossJump() {
+
+		return !ObjectCollision(LowerFront) && !ObjectCollision(FarFront) && ObjectCollision(FarLowerFront);
 	}
 
 	bool ObjectCollision(Transform obj) {
@@ -163,7 +181,9 @@ public class Munkiki : MonoBehaviour {
 	}
 
 	void jump() {
+		this.action = 1;
 		jumpCount = 1.0f;
+		actionCount = 1.0f;
 	}
 
 	void fall() {
