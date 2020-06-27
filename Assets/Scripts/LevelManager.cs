@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class LevelManager : MonoBehaviour {
 	public List<Transform> Tiles;
-	public int MusicalNotes;
+	public List<Transform> MusicalNotes;
 
 	// Use this for initialization
 	void Start () {

@@ -40,18 +40,14 @@ public class Munkiki : MonoBehaviour {
 					break;
 				case 5:
 
-				if (transform.position.y < -0.2f) {
-					Camera.SetParent(null);
-					transform.Translate(0.0f,  -0.5f * Time.deltaTime, 0.0f);
+					if (transform.position.y < -0.2f) {
+						Camera.SetParent(null);
+						transform.Translate(0.0f,  -0.5f * Time.deltaTime, 0.0f);
 
-				} else {
-					transform.Translate(0.0f,  -2.0f * Time.deltaTime, 0.0f);
-					actionCount -= 2.0f * Time.deltaTime;
-				}
-						
-					
-
-					
+					} else {
+						transform.Translate(0.0f,  -2.0f * Time.deltaTime, 0.0f);
+						actionCount -= 2.0f * Time.deltaTime;
+					}
 
 					break;
 			}
@@ -68,6 +64,17 @@ public class Munkiki : MonoBehaviour {
 					action = 0;
 				}
 				
+				foreach (var note in LevelManager.MusicalNotes) {
+					if (Vector3.Distance(transform.position, note.position) < 0.4f) {
+						LevelManager.MusicalNotes.Remove(note);
+						Destroy(note.gameObject);
+						break;
+					}
+
+
+				}
+				
+
 			}
 				
 		}
@@ -85,10 +92,8 @@ public class Munkiki : MonoBehaviour {
 
 			if (tileState < 2) {
 
-				if (tileState == 1) {
+				if (tileState == 1)
 					jump();
-					Debug.Log("Jumping");
-				}
 					
 
 				actionCount = 1.0f;
