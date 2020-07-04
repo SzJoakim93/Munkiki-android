@@ -12,6 +12,7 @@ public class Munkiki : MonoBehaviour {
 	public Transform FarLowerFront;
 	public Transform Camera;
 	public LevelManager LevelManager;
+	public Spark Spark;
 
 	float actionCount = 0.0f;
 	float jumpCount = 0.0f;
@@ -19,6 +20,7 @@ public class Munkiki : MonoBehaviour {
 	int action = 0;
 	Transform pushableObj = null;
 	Transform collidedObj = null;
+	Transform fallableObj = null;
 
 	// Use this for initialization
 	void Start () {
@@ -91,7 +93,7 @@ public class Munkiki : MonoBehaviour {
 							Mathf.Round(pushableObj.position.x), pushableObj.position.y, Mathf.Round(pushableObj.position.z));
 
 						if (!ObjectCollision(LowerFront.position))
-							cubeFall = 1.0f;
+							invokeCubeFall(pushableObj);
 						else
 							pushableObj.SetParent(collidedObj);
 					}
@@ -115,17 +117,17 @@ public class Munkiki : MonoBehaviour {
 			jumpCount -= 2.5f * Time.deltaTime;
 		}
 
-		if (cubeFall > 0.0f) {
-			pushableObj.Translate(0.0f, -1.0f * Time.deltaTime, 0.0f);
+		if (cubeFall > 0.0f) { //cube falling
+			fallableObj.Translate(0.0f, -1.0f * Time.deltaTime, 0.0f);
 			cubeFall -= 1.0f * Time.deltaTime;
 
 			if (cubeFall <= 0.0f) {
-				Vector3 cubeBottomSide = new Vector3(pushableObj.position.x, pushableObj.position.y - 1.0f, pushableObj.position.z);
+				Vector3 cubeBottomSide = new Vector3(fallableObj.position.x, fallableObj.position.y - 1.0f, fallableObj.position.z);
 
-				if (pushableObj.position.y > -0.8f && !ObjectCollision(cubeBottomSide))
+				if (fallableObj.position.y > -0.8f && !ObjectCollision(cubeBottomSide))
 					cubeFall = 1.0f;
 				else
-					pushableObj.SetParent(collidedObj);
+					fallableObj.SetParent(collidedObj);
 					
 			}
 		}
@@ -187,7 +189,21 @@ public class Munkiki : MonoBehaviour {
 	}
 
 	public void Hit() {
-		
+		foreach (var tile in LevelManager.Tiles)
+			if (Vector3.Distance(FrontSide.position, tile.position) < 0.5f && tile.tag == "Destroyable") {
+				Transform [] children = tile.GetComponentsInChildren<Transform>();
+
+				if (children.Length > 1) {
+					invokeCubeFall(children[1]);
+					children[1].SetParent(null);
+				}
+
+				Destroy(tile.gameObject);
+				LevelManager.Tiles.Remove(tile);
+				Spark.gameObject.SetActive(true);
+				Spark.SetSparks(transform);
+				break;
+			}
 	}
 
 	void fixRotate() {
@@ -211,6 +227,11 @@ public class Munkiki : MonoBehaviour {
 			}
 				
 		return 0;
+	}
+
+	void invokeCubeFall(Transform obj) {
+		cubeFall = 1.0f;
+		fallableObj = obj;
 	}
 
 	bool isCrossJump() {
