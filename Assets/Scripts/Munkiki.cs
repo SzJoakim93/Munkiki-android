@@ -48,8 +48,18 @@ public class Munkiki : MonoBehaviour {
 				case 5: //fall
 
 					if (transform.position.y < -0.2f) {
-						Camera.SetParent(null);
-						transform.Translate(0.0f,  -0.5f * Time.deltaTime, 0.0f);
+
+						if (cubeManager.ObjectCollision(Bottom.position))
+							transform.position = new Vector3(
+								cubeManager.CollidedObj.position.x,
+								cubeManager.CollidedObj.position.y + 0.832f,
+								cubeManager.CollidedObj.position.z);
+						else {
+							Camera.SetParent(null);
+							transform.Translate(0.0f,  -0.5f * Time.deltaTime, 0.0f);
+						}
+
+						
 
 					} else {
 						transform.Translate(0.0f,  -2.0f * Time.deltaTime, 0.0f);
@@ -82,9 +92,24 @@ public class Munkiki : MonoBehaviour {
 				if (action == 3 || action == 4)
 					fixRotate();
 
-				if ((action == 1 || action == 2 || action == 5) && !cubeManager.ObjectCollision(Bottom.position))
-					fall();
-				else {
+				if ((action == 1 || action == 2 || action == 5 || action == 6)) {
+					if (!cubeManager.ObjectCollision(Bottom.position))
+						fall();
+					else {
+						transform.position = new Vector3(
+							cubeManager.CollidedObj.position.x,
+							cubeManager.CollidedObj.position.y + 0.832f,
+							cubeManager.CollidedObj.position.z);
+
+						if (cubeManager.CollidedObj.tag == "Moving")
+							transform.SetParent(cubeManager.CollidedObj);
+
+
+						actionCount = 0.0f;
+						action = 0;
+					}
+						
+				} else {
 					if (action == 7) {
 						cubeManager.PushableObj.position = new Vector3(
 							Mathf.Round(cubeManager.PushableObj.position.x), cubeManager.PushableObj.position.y, Mathf.Round(cubeManager.PushableObj.position.z));
@@ -125,13 +150,16 @@ public class Munkiki : MonoBehaviour {
 
 			if (tileState < 2) {
 
-				if (tileState == 1)
-					jump();
-				else if (isCrossJump()) {
+				if (transform.parent != null)
+					transform.SetParent(null);
+
+				if (isCrossJump()) {
 					actionCount = 1.0f;
 					action = 6;
 				}
 				else {
+					if (tileState == 1)
+						jumpCount = 1.0f;
 					actionCount = 1.0f;
 					action = 1;
 				}	
@@ -141,6 +169,8 @@ public class Munkiki : MonoBehaviour {
 	}
 
 	public void Backward() {
+		if (transform.parent != null)
+				transform.SetParent(null);
 		if (action == 0 && !cubeManager.ObjectCollision(BackSide.position)) {
 			actionCount = 1.0f;
 			action = 2;
@@ -217,12 +247,6 @@ public class Munkiki : MonoBehaviour {
 	bool isCrossJump() {
 
 		return !cubeManager.ObjectCollision(LowerFront.position) && !cubeManager.ObjectCollision(FarFront.position) && cubeManager.ObjectCollision(FarLowerFront.position);
-	}
-
-	void jump() {
-		this.action = 1;
-		jumpCount = 1.0f;
-		actionCount = 1.0f;
 	}
 
 	void fall() {
