@@ -1,12 +1,7 @@
 using UnityEngine;
 
 public class CubeManager
-{
-    Transform pushableObj = null;
-	Transform collidedObj = null;
-	Transform fallableObj = null;
-    float cubeFall = 0.0f;
-    LevelManager levelManager;
+{ 
     public Transform PushableObj {
         set {
             this.pushableObj = value;
@@ -22,6 +17,12 @@ public class CubeManager
             return this.collidedObj;
         }
     }
+
+    Transform pushableObj = null;
+    Transform collidedObj = null;
+	Transform fallableObj = null;
+    float cubeFall = 0.0f;
+    LevelManager levelManager;
 
     public CubeManager(LevelManager _levelManager) {
         this.levelManager = _levelManager;
