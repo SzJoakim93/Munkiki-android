@@ -118,14 +118,7 @@ public class Munkiki : MonoBehaviour {
 					if (!cubeManager.ObjectCollision(Bottom.position))
 						fall();
 					else {
-						transform.position = new Vector3(
-							cubeManager.CollidedObj.position.x,
-							cubeManager.CollidedObj.position.y + 0.832f,
-							cubeManager.CollidedObj.position.z);
-
-						if (cubeManager.CollidedObj.tag == "Moving" || cubeManager.CollidedObj.tag == "Spring")
-							transform.SetParent(cubeManager.CollidedObj);
-
+						fixPosition();
 
 						actionCount = 0.0f;
 						action = 0;
@@ -251,6 +244,16 @@ public class Munkiki : MonoBehaviour {
 			transform.eulerAngles = new Vector3(0.0f, 270.0f, 0.0f);
 		else if (transform.eulerAngles.y > 340 || transform.eulerAngles.y < 20)
 			transform.eulerAngles = new Vector3(0.0f, 0.0f, 0.0f);
+	}
+
+	void fixPosition() {
+		transform.position = new Vector3(
+			cubeManager.CollidedObj.position.x,
+			cubeManager.CollidedObj.position.y + 0.832f,
+			cubeManager.CollidedObj.position.z);
+
+		if (cubeManager.CollidedObj.tag == "Moving" || cubeManager.CollidedObj.tag == "Spring")
+			transform.SetParent(cubeManager.CollidedObj);
 	}
 
 	int ObjectCollisonForward() {
