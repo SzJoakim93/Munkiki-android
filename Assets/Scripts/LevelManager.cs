@@ -12,6 +12,8 @@ public class LevelManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		foreach (var note in MusicalNotes)
+			note.Rotate(0.0f, 1.0f, 0.0f);
 	
 	}
 }
