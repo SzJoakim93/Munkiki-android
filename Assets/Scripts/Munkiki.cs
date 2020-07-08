@@ -6,6 +6,7 @@ public class Munkiki : MonoBehaviour {
 	public Transform BackSide;
 	public Transform Bottom;
 	public Transform UpperFront;
+	public Transform UppestFront;
 	public Transform LowerFront;
 	public Transform FarFront;
 	public Transform FarUpperFront;
@@ -85,6 +86,27 @@ public class Munkiki : MonoBehaviour {
 
 					actionCount -= 1.0f * Time.deltaTime;
 					break;
+				case 8: //jump
+					transform.Translate(0.0f, 0.0f, 1.5f * Time.deltaTime);
+					actionCount -= 1.5f * Time.deltaTime;
+
+					if (jumpCount > 0.0f) { //jump
+						transform.Translate(0.0f,  2.5f * Time.deltaTime, 0.0f);
+						jumpCount -= 2.5f * Time.deltaTime;
+					}
+
+					break;
+				case 9: //spring jump
+
+					transform.Translate(0.0f, 0.0f, 1.5f * Time.deltaTime);
+					actionCount -= 1.5f * Time.deltaTime;
+
+					if (jumpCount > 0.0f) { //jump
+						transform.Translate(0.0f,  5.0f * Time.deltaTime, 0.0f);
+						jumpCount -= 5.0f * Time.deltaTime;
+					}
+
+					break;
 			}
 				
 			if (actionCount < 0.0f) {
@@ -92,7 +114,7 @@ public class Munkiki : MonoBehaviour {
 				if (action == 3 || action == 4)
 					fixRotate();
 
-				if ((action == 1 || action == 2 || action == 5 || action == 6)) {
+				if ((action == 1 || action == 2 || action == 5 || action == 6 || action == 8 || action == 9)) {
 					if (!cubeManager.ObjectCollision(Bottom.position))
 						fall();
 					else {
@@ -101,7 +123,7 @@ public class Munkiki : MonoBehaviour {
 							cubeManager.CollidedObj.position.y + 0.832f,
 							cubeManager.CollidedObj.position.z);
 
-						if (cubeManager.CollidedObj.tag == "Moving")
+						if (cubeManager.CollidedObj.tag == "Moving" || cubeManager.CollidedObj.tag == "Spring")
 							transform.SetParent(cubeManager.CollidedObj);
 
 
@@ -134,11 +156,6 @@ public class Munkiki : MonoBehaviour {
 			}
 		}
 
-		if (jumpCount > 0.0f) { //jump
-			transform.Translate(0.0f,  2.5f * Time.deltaTime, 0.0f);
-			jumpCount -= 2.5f * Time.deltaTime;
-		}
-
 		cubeManager.FallAction();
 		
 	}
@@ -150,9 +167,6 @@ public class Munkiki : MonoBehaviour {
 
 			if (tileState < 2) {
 
-				if (transform.parent != null)
-					transform.SetParent(null);
-
 				if (isCrossJump()) {
 					actionCount = 1.0f;
 					action = 6;
@@ -161,9 +175,16 @@ public class Munkiki : MonoBehaviour {
 					if (tileState == 1)
 						jumpCount = 1.0f;
 					actionCount = 1.0f;
-					action = 1;
+					action = 8;
 				}	
+			} else if (isSpring()) {
+				jumpCount = 2.0f;
+				actionCount = 1.0f;
+				action = 9;
 			}
+
+			if (transform.parent != null)
+					transform.SetParent(null);
 				
 		}
 	}
@@ -247,6 +268,12 @@ public class Munkiki : MonoBehaviour {
 	bool isCrossJump() {
 
 		return !cubeManager.ObjectCollision(LowerFront.position) && !cubeManager.ObjectCollision(FarFront.position) && cubeManager.ObjectCollision(FarLowerFront.position);
+	}
+
+	bool isSpring() {
+		if (cubeManager.ObjectCollision(Bottom.position))
+			return cubeManager.CollidedObj.tag == "Spring" && !cubeManager.ObjectCollision(UppestFront.position);
+		return false;
 	}
 
 	void fall() {
