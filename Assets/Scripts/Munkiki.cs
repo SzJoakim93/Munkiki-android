@@ -8,9 +8,11 @@ public class Munkiki : MonoBehaviour {
 	public Transform UpperFront;
 	public Transform UppestFront;
 	public Transform LowerFront;
+	public Transform LowestFront;
 	public Transform FarFront;
 	public Transform FarUpperFront;
 	public Transform FarLowerFront;
+	public Transform FarLowestFront;
 	public Transform Camera;
 	public LevelManager LevelManager;
 	public Spark Spark;
@@ -96,7 +98,7 @@ public class Munkiki : MonoBehaviour {
 					}
 
 					break;
-				case 9: //spring jump
+				case 9: //spring jump near
 
 					transform.Translate(0.0f, 0.0f, 1.5f * Time.deltaTime);
 					actionCount -= 1.5f * Time.deltaTime;
@@ -106,6 +108,16 @@ public class Munkiki : MonoBehaviour {
 						jumpCount -= 5.0f * Time.deltaTime;
 					}
 
+					break;
+				case 10: //spring jump far
+					transform.Translate(0.0f, 0.0f, 3.0f * Time.deltaTime);
+					actionCount -= 1.5f * Time.deltaTime;
+
+					if (jumpCount > 0.0f) { //jump
+						transform.Translate(0.0f,  2.5f * Time.deltaTime, 0.0f);
+						jumpCount -= 2.5f * Time.deltaTime;
+					}
+					
 					break;
 			}
 				
@@ -158,19 +170,22 @@ public class Munkiki : MonoBehaviour {
 
 			int tileState = ObjectCollisonForward();
 
-			if (tileState < 2) {
+			if (tileState < 2) { //no cube on the UpperFront
 
 				if (isCrossJump()) {
 					actionCount = 1.0f;
 					action = 6;
-				}
-				else {
-					if (tileState == 1)
+				} else if (isSpring() && isSpringFar()) {
+					jumpCount = 1.0f;
+					actionCount = 1.0f;
+					action = 10;
+				} else {
+					if (tileState == 1) //cube on the front
 						jumpCount = 1.0f;
 					actionCount = 1.0f;
 					action = 8;
 				}	
-			} else if (isSpring()) {
+			} else if (isSpring() && isSpringNear()) { //cube on the UpperFront
 				jumpCount = 2.0f;
 				actionCount = 1.0f;
 				action = 9;
@@ -270,13 +285,25 @@ public class Munkiki : MonoBehaviour {
 
 	bool isCrossJump() {
 
-		return !cubeManager.ObjectCollision(LowerFront.position) && !cubeManager.ObjectCollision(FarFront.position) && cubeManager.ObjectCollision(FarLowerFront.position);
+		return !cubeManager.ObjectCollision(LowestFront.position) &&
+			!cubeManager.ObjectCollision(LowerFront.position) &&
+			!cubeManager.ObjectCollision(FarFront.position) &&
+			(cubeManager.ObjectCollision(FarLowerFront.position) ||
+				cubeManager.ObjectCollision(FarLowestFront.position));
 	}
 
 	bool isSpring() {
 		if (cubeManager.ObjectCollision(Bottom.position))
-			return cubeManager.CollidedObj.tag == "Spring" && !cubeManager.ObjectCollision(UppestFront.position);
+			return cubeManager.CollidedObj.tag == "Spring";
 		return false;
+	}
+
+	bool isSpringNear() {
+		return !cubeManager.ObjectCollision(UppestFront.position);
+	}
+
+	bool isSpringFar() {
+		return cubeManager.ObjectCollision(FarFront.position) && !cubeManager.ObjectCollision(FarUpperFront.position);
 	}
 
 	void fall() {
