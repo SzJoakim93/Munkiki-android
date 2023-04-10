@@ -36,7 +36,7 @@ public class CubeManager
 			if (cubeFall <= 0.0f) {
 				Vector3 cubeBottomSide = new Vector3(fallableObj.position.x, fallableObj.position.y - 1.0f, fallableObj.position.z);
 
-				if (fallableObj.position.y > -0.6f && !ObjectCollision(cubeBottomSide))
+				if (fallableObj.position.y > 0.45f && !ObjectCollision(cubeBottomSide))
 					cubeFall = 1.0f;
 				else
 					fallableObj.SetParent(collidedObj);

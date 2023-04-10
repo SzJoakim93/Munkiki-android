@@ -242,8 +242,8 @@ public class Munkiki : MonoBehaviour {
 					children[1].SetParent(null);
 				}
 
-				Destroy(tile.gameObject);
 				LevelManager.Tiles.Remove(tile);
+				Destroy(tile.gameObject);
 				Spark.gameObject.SetActive(true);
 				Spark.SetSparks(transform);
 				break;
