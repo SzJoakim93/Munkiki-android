@@ -33,12 +33,12 @@ public class Munkiki : MonoBehaviour {
 
 			switch (action) {
 				case 1: //step forward
-					transform.Translate(0.0f, 0.0f, 1.5f * Time.deltaTime);
-					actionCount -= 1.5f * Time.deltaTime;
+					transform.Translate(0.0f, 0.0f, 1.5f * Global.SIZE_MULTIPLER * Time.deltaTime);
+					actionCount -= 1.5f * Global.SIZE_MULTIPLER * Time.deltaTime;
 					break;
 				case 2: //step backward
-					transform.Translate(0.0f, 0.0f, -1.5f * Time.deltaTime);
-					actionCount -= 1.5f * Time.deltaTime;
+					transform.Translate(0.0f, 0.0f, -1.5f * Global.SIZE_MULTIPLER * Time.deltaTime);
+					actionCount -= 1.5f * Global.SIZE_MULTIPLER * Time.deltaTime;
 					break;
 				case 3: //turn right
 					transform.Rotate(0.0f, 100.0f * Time.deltaTime, 0.0f);
@@ -50,72 +50,72 @@ public class Munkiki : MonoBehaviour {
 					break;
 				case 5: //fall
 
-					if (transform.position.y < -0.2f) {
+					if (transform.position.y < 2.0f) {
 
 						if (cubeManager.ObjectCollision(Bottom.position))
 							transform.position = new Vector3(
 								cubeManager.CollidedObj.position.x,
-								cubeManager.CollidedObj.position.y + 0.832f,
+								cubeManager.CollidedObj.position.y + 4.875f,
 								cubeManager.CollidedObj.position.z);
 						else {
 							Camera.SetParent(null);
-							transform.Translate(0.0f,  -0.5f * Time.deltaTime, 0.0f);
+							transform.Translate(0.0f,  -0.5f * Global.SIZE_MULTIPLER * Time.deltaTime, 0.0f);
 						}
 
 						
 
 					} else {
-						transform.Translate(0.0f,  -2.0f * Time.deltaTime, 0.0f);
-						actionCount -= 2.0f * Time.deltaTime;
+						transform.Translate(0.0f,  -2.0f * Global.SIZE_MULTIPLER * Time.deltaTime, 0.0f);
+						actionCount -= 2.0f * Global.SIZE_MULTIPLER * Time.deltaTime;
 					}
 
 					break;
 				case 6: //cross jump
-					transform.Translate(0.0f, 0.0f, 3.0f * Time.deltaTime);
-					actionCount -= 1.5f * Time.deltaTime;
+					transform.Translate(0.0f, 0.0f, 3.0f * Global.SIZE_MULTIPLER * Time.deltaTime);
+					actionCount -= 1.5f * Global.SIZE_MULTIPLER * Time.deltaTime;
 					break;
 				case 7: //pushing
-					transform.Translate(0.0f, 0.0f, 1.0f * Time.deltaTime);
+					transform.Translate(0.0f, 0.0f, 1.0f * Global.SIZE_MULTIPLER * Time.deltaTime);
 
 					if (Mathf.RoundToInt(transform.eulerAngles.y) == 0)
-						cubeManager.PushableObj.Translate(0.0f, 0.0f, 1.0f * Time.deltaTime);
+						cubeManager.PushableObj.Translate(0.0f, 0.0f, 1.0f * Global.SIZE_MULTIPLER * Time.deltaTime);
 					else if (Mathf.RoundToInt(transform.eulerAngles.y) == 270)
-						cubeManager.PushableObj.Translate(-1.0f * Time.deltaTime, 0.0f, 0.0f);
+						cubeManager.PushableObj.Translate(-1.0f * Global.SIZE_MULTIPLER * Time.deltaTime, 0.0f, 0.0f);
 					else if (Mathf.RoundToInt(transform.eulerAngles.y) == 180)
-						cubeManager.PushableObj.Translate(0.0f, 0.0f, -1.0f * Time.deltaTime);
+						cubeManager.PushableObj.Translate(0.0f, 0.0f, -1.0f * Global.SIZE_MULTIPLER * Time.deltaTime);
 					else if (Mathf.RoundToInt(transform.eulerAngles.y) == 90)
-						cubeManager.PushableObj.Translate(1.0f * Time.deltaTime, 0.0f, 0.0f);
+						cubeManager.PushableObj.Translate(1.0f * Global.SIZE_MULTIPLER * Time.deltaTime, 0.0f, 0.0f);
 
-					actionCount -= 1.0f * Time.deltaTime;
+					actionCount -= 1.0f * Global.SIZE_MULTIPLER * Time.deltaTime;
 					break;
 				case 8: //jump
-					transform.Translate(0.0f, 0.0f, 1.5f * Time.deltaTime);
-					actionCount -= 1.5f * Time.deltaTime;
+					transform.Translate(0.0f, 0.0f, 1.5f * Global.SIZE_MULTIPLER * Time.deltaTime);
+					actionCount -= 1.5f * Global.SIZE_MULTIPLER * Time.deltaTime;
 
 					if (jumpCount > 0.0f) { //jump
-						transform.Translate(0.0f,  2.5f * Time.deltaTime, 0.0f);
-						jumpCount -= 2.5f * Time.deltaTime;
+						transform.Translate(0.0f,  2.5f * Global.SIZE_MULTIPLER * Time.deltaTime, 0.0f);
+						jumpCount -= 2.5f * Global.SIZE_MULTIPLER * Time.deltaTime;
 					}
 
 					break;
 				case 9: //spring jump near
 
-					transform.Translate(0.0f, 0.0f, 1.5f * Time.deltaTime);
-					actionCount -= 1.5f * Time.deltaTime;
+					transform.Translate(0.0f, 0.0f, 1.5f * Global.SIZE_MULTIPLER * Time.deltaTime);
+					actionCount -= 1.5f * Global.SIZE_MULTIPLER * Time.deltaTime;
 
 					if (jumpCount > 0.0f) { //jump
-						transform.Translate(0.0f,  5.0f * Time.deltaTime, 0.0f);
-						jumpCount -= 5.0f * Time.deltaTime;
+						transform.Translate(0.0f,  5.0f * Global.SIZE_MULTIPLER * Time.deltaTime, 0.0f);
+						jumpCount -= 5.0f * Global.SIZE_MULTIPLER * Time.deltaTime;
 					}
 
 					break;
 				case 10: //spring jump far
-					transform.Translate(0.0f, 0.0f, 3.0f * Time.deltaTime);
-					actionCount -= 1.5f * Time.deltaTime;
+					transform.Translate(0.0f, 0.0f, 3.0f * Global.SIZE_MULTIPLER * Time.deltaTime);
+					actionCount -= 1.5f * Global.SIZE_MULTIPLER * Time.deltaTime;
 
 					if (jumpCount > 0.0f) { //jump
-						transform.Translate(0.0f,  2.5f * Time.deltaTime, 0.0f);
-						jumpCount -= 2.5f * Time.deltaTime;
+						transform.Translate(0.0f,  2.5f * Global.SIZE_MULTIPLER * Time.deltaTime, 0.0f);
+						jumpCount -= 2.5f * Global.SIZE_MULTIPLER * Time.deltaTime;
 					}
 					
 					break;
@@ -173,21 +173,21 @@ public class Munkiki : MonoBehaviour {
 			if (tileState < 2) { //no cube on the UpperFront
 
 				if (isCrossJump()) {
-					actionCount = 1.0f;
+					actionCount = 1.0f * Global.SIZE_MULTIPLER;
 					action = 6;
 				} else if (isSpring() && isSpringFar()) {
-					jumpCount = 1.0f;
-					actionCount = 1.0f;
+					jumpCount = 1.0f * Global.SIZE_MULTIPLER;
+					actionCount = 1.0f * Global.SIZE_MULTIPLER;
 					action = 10;
 				} else {
 					if (tileState == 1) //cube on the front
-						jumpCount = 1.0f;
-					actionCount = 1.0f;
+						jumpCount = 1.0f * Global.SIZE_MULTIPLER;
+					actionCount = 1.0f * Global.SIZE_MULTIPLER;
 					action = 8;
 				}	
 			} else if (isSpring() && isSpringNear()) { //cube on the UpperFront
-				jumpCount = 2.0f;
-				actionCount = 1.0f;
+				jumpCount = 2.0f * Global.SIZE_MULTIPLER;
+				actionCount = 1.0f * Global.SIZE_MULTIPLER;
 				action = 9;
 			}
 
@@ -201,7 +201,7 @@ public class Munkiki : MonoBehaviour {
 		if (transform.parent != null)
 				transform.SetParent(null);
 		if (action == 0 && !cubeManager.ObjectCollision(BackSide.position)) {
-			actionCount = 1.0f;
+			actionCount = 1.0f * Global.SIZE_MULTIPLER;
 			action = 2;
 		}
 	}
@@ -224,9 +224,9 @@ public class Munkiki : MonoBehaviour {
 
 		if (!cubeManager.ObjectCollision(UpperFront.position) && !cubeManager.ObjectCollision(FarFront.position))
 			foreach (var tile in LevelManager.Tiles)
-				if (Vector3.Distance(FrontSide.position, tile.position) < 0.5f) {
+				if (Vector3.Distance(FrontSide.position, tile.position) < 1.0f) {
 					cubeManager.PushableObj = tile;
-					actionCount = 1.0f;
+					actionCount = 1.0f * Global.SIZE_MULTIPLER;
 					action = 7;
 				}
 
@@ -264,7 +264,7 @@ public class Munkiki : MonoBehaviour {
 	void fixPosition() {
 		transform.position = new Vector3(
 			cubeManager.CollidedObj.position.x,
-			cubeManager.CollidedObj.position.y + 0.832f,
+			cubeManager.CollidedObj.position.y + 4.875f,
 			cubeManager.CollidedObj.position.z);
 
 		if (cubeManager.CollidedObj.tag == "Moving" || cubeManager.CollidedObj.tag == "Spring")
@@ -308,6 +308,6 @@ public class Munkiki : MonoBehaviour {
 
 	void fall() {
 		action = 5;
-		actionCount = 1.0f;
+		actionCount = 1.0f * Global.SIZE_MULTIPLER;
 	}
 }

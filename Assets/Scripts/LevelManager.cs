@@ -44,9 +44,9 @@ public class LevelManager : MonoBehaviour {
 			else
 			{
 				newObject =
-						Instantiate<Transform>(cubes[int.Parse(obj_params[3])], new Vector3(float.Parse(obj_params[0], CultureInfo.InvariantCulture),
-							float.Parse(obj_params[1], CultureInfo.InvariantCulture),
-							float.Parse(obj_params[2], CultureInfo.InvariantCulture)), Quaternion.identity);
+						Instantiate<Transform>(cubes[int.Parse(obj_params[3])], new Vector3(float.Parse(obj_params[0], CultureInfo.InvariantCulture)*Global.SIZE_MULTIPLER,
+							float.Parse(obj_params[1], CultureInfo.InvariantCulture)*Global.SIZE_MULTIPLER,
+							float.Parse(obj_params[2], CultureInfo.InvariantCulture)*Global.SIZE_MULTIPLER), Quaternion.identity);
 				newObject.gameObject.SetActive(true);
 				Tiles.Add(newObject);
 
@@ -77,7 +77,7 @@ public class LevelManager : MonoBehaviour {
 		Transform instantiatedObj = Instantiate<Transform>(newObject, parentObject.position, Quaternion.identity);
 		instantiatedObj.gameObject.SetActive(true);
 		instantiatedObj.SetParent(parentObject);
-		instantiatedObj.Translate(0.0f, 1.0f, 0.0f);
+		instantiatedObj.Translate(0.0f, Global.SIZE_MULTIPLER, 0.0f);
 
 		if (item == "*" || item == "%")
 		{
