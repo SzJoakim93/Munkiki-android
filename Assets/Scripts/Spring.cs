@@ -13,8 +13,8 @@ public class Spring : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		transform.Translate(0.0f, movementSpeed * 0.01f, 0.0f);
-		x += 0.1f;
+		transform.Translate(0.0f, movementSpeed * Time.deltaTime, 0.0f);
+		x += 0.01f;
 
 		if (x > maxValue)
 			x = 0.0f;
