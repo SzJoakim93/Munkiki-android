@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class ButtonsInGame : MonoBehaviour {
 
@@ -9,6 +10,7 @@ public class ButtonsInGame : MonoBehaviour {
     [SerializeField] AdManagerInterstitial AdManager;
     [SerializeField] MessageDialog MessageDialog;
     [SerializeField] LanguageManager LanguageManager;
+    [SerializeField] Button NextLevelBtn;
     
     enum SelectedButton
     {
@@ -47,6 +49,10 @@ public class ButtonsInGame : MonoBehaviour {
 
     public void ShowSummaryMenu()
     {
+        if ((int)Global.level == 25+Global.magicKeys)
+        {
+            NextLevelBtn.interactable = false;
+        }
         SummaryPanel.SetActive(true);
     }
 

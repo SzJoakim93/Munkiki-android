@@ -24,6 +24,8 @@ public class Munkiki : MonoBehaviour {
     [SerializeField] PointAnimator PointAnimator;
     [SerializeField] AudioSource pickup;
     [SerializeField] AudioSource win;
+    [SerializeField] AudioSource PushSnd;
+    [SerializeField] AudioSource HitBox;
     [SerializeField] CubeManager CubeManager;
     Vector3 pushDir;
 
@@ -213,6 +215,10 @@ public class Munkiki : MonoBehaviour {
                         {
                             PlayerPrefs.SetInt("UnlockedLevels", Global.level+1);
                         }
+                        if (Global.level == 25)
+                        {
+                            Global.startingMenu = 2;
+                        }
                         animator.SetTrigger("AllMusicalNotesCollected");
                         StartCoroutine(ActivateOwnMusicalNote());
                         StartCoroutine(ShowSummaryMenu());
@@ -270,13 +276,15 @@ public class Munkiki : MonoBehaviour {
 
     public void Push() {
 
-        if (!CubeManager.ObjectCollision(UpperFront.position) && !CubeManager.ObjectCollision(FarFront.position))
+        if (action == 0 && !CubeManager.ObjectCollision(UpperFront.position) && !CubeManager.ObjectCollision(FarFront.position))
             foreach (var tile in LevelManager.Tiles)
                 if (Vector3.Distance(FrontSide.position, tile.position) < 1.0f) {
                     CubeManager.PushableObj = tile;
                     actionCount = 1.0f * Global.SIZE_MULTIPLER;
                     action = 7;
+                    steps++;
                     animator.SetTrigger("Pushing");
+                    PushSnd.Play();
                 }
     }
 
@@ -308,6 +316,7 @@ public class Munkiki : MonoBehaviour {
                 Destroy(tile.gameObject);
                 Spark.transform.position = transform.position;
                 Spark.Play();
+                HitBox.Play();
                 break;
             }
     }
@@ -379,7 +388,8 @@ public class Munkiki : MonoBehaviour {
     {
         yield return new WaitForSeconds(2.5f);
         ButtonsInGame.ShowSummaryMenu();
-        PointAnimator.StartAnimation((int)Math.Pow((float)LevelManager.optimalSteps[Global.level-1]/steps*100, 2));
+        Debug.Log((int)(Math.Pow((float)LevelManager.optimalSteps[Global.level-1]/steps, 2)*100));
+        PointAnimator.StartAnimation((int)(Math.Pow((float)LevelManager.optimalSteps[Global.level-1]/steps, 2)*100));
     }
 
     void fixRotate()

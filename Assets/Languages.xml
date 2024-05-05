@@ -14,17 +14,25 @@
       <element name="/Canvas/SettingsMenu/SoundLabel">Sound</element>
       <element name="/Canvas/SettingsMenu/MusicLabel">Music</element>
       <element name="/Canvas/SettingsMenu/LanguageLabel">Language</element>
+      <element name="/Canvas/MainMenu/View/Levels/BonusText">Bonus levels:</element>
+      <dynamic-text name="Win1">Congratulations! You completed the normal levels.</dynamic-text>
+      <dynamic-text name="Win2">Your adventures is not ended. It seems you have not found all magical keys. Find all of them and unlock the bonus levels.</dynamic-text>
+      <dynamic-text name="Win3">You can go to the bonus levels to find more difficult challenges.</dynamic-text>
+      <dynamic-text name="WinBonus">Congratulations! You have completed the bonus levels too. Whatch the updates of application because new levels coming soon.</dynamic-text>
     </menu>
     <ingame>
-      <element name="/Canvas/PausePanel/Title">Pause</element>
-      <element name="/Canvas/PausePanel/ExitBtn/Text">Exit</element>
-      <element name="/Canvas/PausePanel/RestartBtn/Text">Restart</element>
-      <element name="/Canvas/PausePanel/ResumeBtn/Text">Resume</element>
+      <element name="/Canvas/PausePanel/Maintitle">Pause</element>
+      <element name="/Canvas/PausePanel/Exit/ExitText">Exit</element>
+      <element name="/Canvas/PausePanel/Restart/RestartText">Restart</element>
+      <element name="/Canvas/PausePanel/Resume/ResumeText">Resume</element>
       <element name="/Canvas/QuestionDialog/YesBtn/Text">Yes</element>
       <element name="/Canvas/QuestionDialog/NoBtn/Text">No</element>
-      <element name="/Canvas/SummaryPlace/Buttons/DoubleXPBtn/Text">Double XP</element>
-      <element name="/Canvas/SummaryPlace/Buttons/NewGameBtn/Text">New game</element>
-      <element name="/Canvas/SummaryPlace/Buttons/ReturnToMenu/Text">Return to menu</element>
+      <element name="/Canvas/SummaryPanel/Maintitle">Level completed</element>
+      <element name="/Canvas/SummaryPanel/NextLevel/NextText">Next level</element>
+      <element name="/Canvas/SummaryPanel/Exit/ExitText">Exit</element>
+      <element name="/Canvas/GameOverPanel/Maintitle">Game over</element>
+      <element name="/Canvas/GameOverPanel/Exit/ExitText">Exit</element>
+      <element name="/Canvas/GameOverPanel/Restart/RestartText">Restart</element>
       <dynamic-text name="Tutorial1">Collect all musical notes to complete the level.</dynamic-text>
       <dynamic-text name="Tutorial2">Always step between the cubes and avoid the water. You can also jump across a distance of cube. At the menu a [Key] icon indicates to be a magic key on the level.</dynamic-text>
       <dynamic-text name="Tutorial3">You can jump up to a height of cube.</dynamic-text>
@@ -53,17 +61,25 @@
       <element name="/Canvas/SettingsMenu/SoundLabel">Hang</element>
       <element name="/Canvas/SettingsMenu/MusicLabel">Zene</element>
       <element name="/Canvas/SettingsMenu/LanguageLabel">Nyelv</element>
+      <element name="/Canvas/MainMenu/View/Levels/BonusText">Bónusz szintek:</element>
+      <dynamic-text name="Win1">Gratulálunk! Teljeítetted az összes normál szintet.</dynamic-text>
+      <dynamic-text name="Win2">De a kalandod még nem ért véget. Úgy tűnik, hogy nem találtad meg az összes varázskulcsot. Keresd meg őket és oldd fel a bónusz szinteket.</dynamic-text>
+      <dynamic-text name="Win3">Várnak rád a bónusz szintek, ahol nagyobb kihívásokkal fogsz találkozni.</dynamic-text>
+      <dynamic-text name="WinBonus">Gratulálunk! Teljeítetted a bónusz szinteket is. Figyeld az alkalmazás frissítéseket, ugyanis hamarosan új szintek lesznek elérhetőek.</dynamic-text>
     </menu>
     <ingame>
-      <element name="/Canvas/PausePanel/Title">Szünet</element>
-      <element name="/Canvas/PausePanel/ExitBtn/Text">Kilépés</element>
-      <element name="/Canvas/PausePanel/RestartBtn/Text">Új játék</element>
-      <element name="/Canvas/PausePanel/ResumeBtn/Text">Folytatás</element>
+      <element name="/Canvas/PausePanel/Maintitle">Szünet</element>
+      <element name="/Canvas/PausePanel/Exit/ExitText">Kilépés</element>
+      <element name="/Canvas/PausePanel/Restart/RestartText">Újra</element>
+      <element name="/Canvas/PausePanel/Resume/ResumeText">Folytatás</element>
       <element name="/Canvas/QuestionDialog/YesBtn/Text">Igen</element>
       <element name="/Canvas/QuestionDialog/NoBtn/Text">Nem</element>
-      <element name="/Canvas/SummaryPlace/Buttons/DoubleXPBtn/Text">XP duplázó</element>
-      <element name="/Canvas/SummaryPlace/Buttons/NewGameBtn/Text">Új játék</element>
-      <element name="/Canvas/SummaryPlace/Buttons/ReturnToMenu/Text">Kilépés</element>
+      <element name="/Canvas/SummaryPanel/Maintitle">Szint teljesítve</element>
+      <element name="/Canvas/SummaryPanel/NextLevel/NextLevelText">Következő szint</element>
+      <element name="/Canvas/SummaryPanel/Exit/ExitText">Kilépés</element>
+      <element name="/Canvas/GameOverPanel/Maintitle">Vége a játéknak</element>
+      <element name="/Canvas/GameOverPanel/Exit/ExitText">Kilépés</element>
+      <element name="/Canvas/GameOverPanel/Restart/RestartText">Újra</element>
       <dynamic-text name="Tutorial1">A szint teljesítéséhez gyűjtsd össze az összes hangjegyet.</dynamic-text>
       <dynamic-text name="Tutorial2">Mindig a kockákon lépkedj és próbáld kerülni a vizet. Ezen felül lehetőséged van egy kockányi távolságot átugrani.</dynamic-text>
       <dynamic-text name="Tutorial3">Lehetőséged van egyel magasabban lévő kockára felugrani.</dynamic-text>

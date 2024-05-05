@@ -3,6 +3,7 @@ using UnityEngine;
 public class CubeManager : MonoBehaviour
 {
     [SerializeField] LevelManager LevelManager;
+    [SerializeField] AudioSource FallSnd;
     public Transform PushableObj {
         set {
             this.pushableObj = value;
@@ -85,13 +86,18 @@ public class CubeManager : MonoBehaviour
             fallableObj.Translate(0.0f, -1.0f * Global.SIZE_MULTIPLER * Time.deltaTime, 0.0f);
             cubeFall -= 1.0f * Global.SIZE_MULTIPLER * Time.deltaTime;
 
-            if (cubeFall <= 0.0f) {
+            if (cubeFall <= 0.0f)
+            {
                 Vector3 cubeBottomSide = new Vector3(fallableObj.position.x, fallableObj.position.y - (1.0f * Global.SIZE_MULTIPLER), fallableObj.position.z);
 
                 if (fallableObj.position.y > 0.45f && !ObjectCollision(cubeBottomSide))
                     cubeFall = Global.SIZE_MULTIPLER;
                 else
+                {
+                    FallSnd.Play();
                     fallableObj.SetParent(collidedObj);
+                }
+                    
             }
         }
     }
@@ -99,7 +105,7 @@ public class CubeManager : MonoBehaviour
     public bool ObjectCollision(Vector3 obj) {
         foreach (var tile in LevelManager.Tiles)
         {
-            if (Vector3.Distance(obj, tile.position) < 1.75f)
+            if (Vector3.Distance(obj, tile.position) < 2.5)
             {
                 collidedObj = tile;
                 return true;

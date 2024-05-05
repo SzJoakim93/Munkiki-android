@@ -18,8 +18,8 @@ public class LevelManager : MonoBehaviour {
 
     public readonly int[] optimalSteps = new int[] {
         3, 4, 8, 10, 18,
-        15, 9, 23, 13, 19, 
-        7, 10, 23, 18, 25,
+        16, 9, 17, 13, 18,
+        8, 10, 18, 18, 25,
         30, 35, 18, 30, 38,
         24, 26, 50, 27, 21,
         41, 21, 17, 43, 22

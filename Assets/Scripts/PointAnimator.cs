@@ -28,7 +28,7 @@ public class PointAnimator : MonoBehaviour {
     void Update () {
         if (currentPoints < maxPoints && currentPoints < 1000)
         {
-            currentPoints++;
+            currentPoints += (int)(Time.deltaTime*750);
             if (currentPoints >= maxPoints)
             {
                 currentPoints -= maxPoints - currentPoints;

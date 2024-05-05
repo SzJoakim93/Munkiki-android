@@ -8,9 +8,12 @@ public class Menu : MonoBehaviour
 
     [SerializeField] GameObject Intro;
     [SerializeField] GameObject MainMenu;
+    [SerializeField] GameObject Win;
     [SerializeField] GameObject LevelButtonPack;
     [SerializeField] Sprite ActiveStar;
     [SerializeField] Sprite ActiveKey;
+    [SerializeField] Text WinText;
+    [SerializeField] LanguageManager LanguageManager;
     GameObject actualMenu;
     Button[] levelButtons;
     Image[][] starsAndKey;
@@ -20,10 +23,8 @@ public class Menu : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        actualMenu = Intro;
-
         levelButtons = LevelButtonPack.GetComponentsInChildren<Button>(true);
-        for (int i = 1; i < PlayerPrefs.GetInt("UnlockedLevels", 1); i++)
+        for (int i = 1; i < /*PlayerPrefs.GetInt("UnlockedLevels", 1)*/30; i++)
         {
             levelButtons[i].interactable = true;
         }
@@ -40,21 +41,63 @@ public class Menu : MonoBehaviour
 
             if (PlayerPrefs.GetInt($"LevelMagicKey{i+1}", 0) == 1)
             {
-                starsAndKey[i][4].sprite = ActiveKey;
-                levelButtons[BASIC_LEVEL_COUNT + Global.magicKeys].interactable = true;
+                if (starsAndKey[i].Length > 4)
+                {
+                    starsAndKey[i][4].sprite = ActiveKey;
+                }
+
+                levelButtons[BASIC_LEVEL_COUNT + Global.magicKeys - 1].interactable = true;
                 Global.magicKeys++;
             }
         }
 
-        /*Global.LoadState();
-        StarTxt.text = Global.TotalStars.ToString();
-        TotalScores.text = Global.TotalScores.ToString();*/
+        switch (Global.startingMenu)
+        {
+            case 0:
+                actualMenu = Intro;
+                break;
+            case 1:
+                Intro.SetActive(false);
+                actualMenu = MainMenu;
+                //cameraStates.SetPosition(1);
+                break;
+            case 2:
+                Intro.SetActive(false);
+                actualMenu = Win;
+                //cameraStates.SetPosition(1);
+                break;
+        }
+
+        actualMenu.SetActive(true);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (Global.startingMenu == 2 && WinText.text == "")
+        {
+            if (Global.level >= BASIC_LEVEL_COUNT + BONUS_LEVEL_COUNT)
+            {
+                WinText.text = LanguageManager.GetTextByValue("WinBonus");
+            }
+            else
+            {
+                WinText.text = LanguageManager.GetTextByValue("Win1");
+                if(Global.magicKeys >= BONUS_LEVEL_COUNT)
+                {
+                    WinText.text += "\n" + LanguageManager.GetTextByValue("Win3");
+                }
+                else
+                {
+                    WinText.text += "\n" + LanguageManager.GetTextByValue("Win2");
+                }
+            }
+        }
+
+        if (Global.startingMenu != 0)
+        {
+            Global.startingMenu = 0;
+        }
     }
 
     public void StartClick()

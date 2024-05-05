@@ -17,7 +17,7 @@ public class LanguageManager : MonoBehaviour {
     XmlNodeList dynamicTexts;
 
     // Use this for initialization
-    void Start () {
+    void Start() {
         SetLanguage();
     }
 
